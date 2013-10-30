@@ -7,6 +7,7 @@ module.exports = function (grunt) {
       repo = require('retire/lib/repo'),
       resolve = require('retire/lib/resolve'),
       fs = require('fs'),
+      npm = require('npm'),
       crypto = require('crypto'),
       request = require('request'),
       async = require('async');
@@ -16,6 +17,7 @@ module.exports = function (grunt) {
       var filesSrc = this.filesSrc;
 
       var vulnsFound = false;
+      var nodeDeps = [];
 
       // Merge task-specific and/or target-specific options with these defaults.
       var options = this.options({
@@ -72,7 +74,34 @@ module.exports = function (grunt) {
          console.log(new Array(comp.level).join(' ') + (comp.parent ? String.fromCharCode(8627) + ' ' : '') + comp.component + ' ' + comp.version);
       }
 
+      function listdep(parent, filter, dep, level, deps) {
+         for (var i in dep.dependencies) {
+            if (filter !== null && filter.indexOf(i) === -1) {
+               continue;
+            }
+            var d = { component: i, version: dep.dependencies[i].version, parent: parent, level: level };
+            nodeDeps.push(d);
+            listdep(d, null, dep.dependencies[i], level + 1, deps);
+         }
+      }
 
+      function getNodeDependencies(limit) {
+         var deps = [];
+         npm.load({}, function() {
+            npm.commands.ls([], true, function (er, _, pkginfo) {
+               var filter = null;
+               if (limit) {
+                  var packages = JSON.parse(fs.readFileSync('package.json'));
+                  filter = [];
+                  for(var k in packages.dependencies) {
+                     filter.push(k);
+                  }
+               }
+               listdep({component: pkginfo.name, version: pkginfo.version}, filter, pkginfo, 1, deps);
+            });
+         });
+         return deps;
+      }
 
       // I'm really sorry for all this horrible nesting! Should be rewritten.
 
@@ -105,7 +134,9 @@ module.exports = function (grunt) {
                // Check for vulnerabilities in package.json
                var pkg = grunt.file.readJSON('package.json');
 
-               for (var i in pkg.dependencies) {
+               getNodeDependencies(options.packageOnly);
+
+               for (var i in nodeDeps) {
                   var results = retire.scanNodeDependency(pkg.dependencies[i], nodeRepositoryContent);
                   if (retire.isVulnerable(results)) {
                      vulnsFound = true;
@@ -119,9 +150,6 @@ module.exports = function (grunt) {
 
                if(!pkg.dependencies) {
                   grunt.log.debug('No dependencies found in package.json (note: we dont check devDependencies since they are only used locally).');
-               }
-               if(!options.packageOnly) {
-                  grunt.log.debug('\'package: false\' is not implemented in grunt-plugin, using \'true\'.');
                }
             }
 
