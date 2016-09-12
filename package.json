@@ -1,12 +1,13 @@
 {
   "name": "grunt-retire",
   "description": "Grunt plugin for retire.",
-  "version": "0.3.10",
+  "version": "1.0.3",
   "homepage": "https://github.com/bekk/grunt-retire",
   "author": {
     "name": "Ståle Pettersen",
     "email": "staale@gmail.com"
   },
+  "license" : "Apache-2.0",
   "repository": {
     "type": "git",
     "url": "git://github.com/bekk/grunt-retire.git"
@@ -19,21 +20,19 @@
     "node": ">= 0.8.0"
   },
   "scripts": {
-    "test": "grunt test"
   },
-  "dependencies" : {
-    "retire"  : "~1.0.x",
-    "async"   : "~0.9.x",
-    "request" : "~2.55.x"
+  "dependencies": {
+    "retire": "~1.2.x",
+    "async": "~1.5.x",
+    "request": "~2.67.x"
   },
-  "devDependencies" : {
-    "grunt"   : "~0.4.x",
-    "grunt-contrib-jshint"   : "~0.11.x",
-    "grunt-contrib-clean"    : "~0.6.x",
-    "grunt-contrib-nodeunit" : "0.4.x"
+  "devDependencies": {
+    "grunt": "~1.0.x",
+    "grunt-contrib-jshint": "~1.0.x",
+    "grunt-contrib-clean": "~1.0.x"
   },
   "peerDependencies": {
-    "grunt": "~0.4.x"
+    "grunt": ">=1.0.0"
   },
   "keywords": [
     "gruntplugin",
@@ -43,11 +42,15 @@
   "contributors": [
     {
       "name": "Alexander Vassbotn Røyne-Helgesen",
-      "email" : "alexander@phun-ky.net"
+      "email": "alexander@phun-ky.net"
     },
     {
       "name": "Erlend Oftedal",
-      "email" : "erlend@oftedal.no"
+      "email": "erlend@oftedal.no"
+    },
+    {
+      "name": "Sergey Zarouski",
+      "email": "sergey@webuniverse.io"
     }
   ]
 }

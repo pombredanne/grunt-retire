@@ -9,7 +9,7 @@ Grunt task for [retire.js](https://github.com/RetireJS/retire.js). Scanner detec
 
 
 ## Getting Started
-This plugin requires Grunt `~0.4.0`
+This plugin requires Grunt `>=1.0.0`. Version 0.3.12 is compatible with Grunt 0.4.
 
 If you haven't used [Grunt](http://gruntjs.com/) before, be sure to check out the [Getting Started](http://gruntjs.com/getting-started) guide, as it explains how to create a [Gruntfile](http://gruntjs.com/sample-gruntfile) as well as install and use Grunt plugins. Once you're familiar with that process, you may install this plugin with this command:
 
@@ -51,7 +51,8 @@ Example configuration below shows default option values and the correct syntax t
          nodeRepository: 'https://raw.github.com/RetireJS/retire.js/master/repository/npmrepository.json',
          outputFile: './retire-output.json',
          ignore: 'documents,java',
-         ignorefile: '.retireignore' /** list of files to ignore **/
+         /** list of files to ignore **/
+         ignorefile: '.retireignore' //or '.retireignore.json'
       }
     }
 ```
@@ -106,7 +107,7 @@ Node repository loaded from: https://raw.github.com/RetireJS/retire.js/master/re
 
 
 
-## Example output when no vulnerabilities is found
+## Example output when no vulnerabilities are found
 ```
 ➜  grunt-retire git:(master) ✗ grunt retire
 Running "retire:jsPath" (retire) task
@@ -119,7 +120,11 @@ Done, without errors.
 
 
 ## Release History
-
+ * 2016-09-02   v1.0.3   Compatible again with Node 0.10.x. v1.0.2 broke compatibility because of `find()`.
+ * 2016-08-29	v1.0.2   Uses retire 1.2.x, which supports ignoring specific vulnerabilities through `.retireignore.json`.
+ * 2016-05-31	v1.0.0   Upgraded dependency for Grunt to 1.0.0 to get remove graceful-js warning. Requires Grunt 1.0.x or newer.
+ * 2016-02-22	v0.3.12  Added support for Grunt 1.0.0.
+ * 2016-02-12	v0.3.11  Upgraded dependencies
  * 2013-11-12   v0.1.15  Upgrading dependencies. Proxy support
  * 2013-10-30   v0.1.12  Upgrade to retire v0.1.12. js and node defined as targets.
  * 2013-10-30   v0.1.0   First version.
